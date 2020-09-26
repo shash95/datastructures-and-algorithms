@@ -3,6 +3,7 @@
 ########################################################################################################################
 from collections import deque
 
+
 class Graph:
 
     def __init__(self):
@@ -61,27 +62,20 @@ class ImplementGraph:
             node.visited = False
 
     # noinspection PyMethodMayBeStatic
-    def implement_dfs(self, source):
-        # iterate on all outbound edges and visit if they are unvisited
-        print(source.data)
-        source.visited = True
-        for node in source.outbound_edges:
-            if not node.visited:
-                self.implement_dfs(node)
-
-    # noinspection PyMethodMayBeStatic
-    def implement_bfs(self, source):
+    def check_path(self, source, target):
         q = deque()
-        q.append(source)
         source.visited = True
+        q.append(source)
 
         while len(q) != 0:
             current_node = q.popleft()
-            print(current_node.data)
             for node in current_node.outbound_edges:
+                if node == target:
+                    return True
                 if not node.visited:
-                    node.visited = True
                     q.append(node)
+
+        return False
 
 
 if __name__ == '__main__':
@@ -95,7 +89,7 @@ if __name__ == '__main__':
     #     6: [1]
     # }
     # defining nodes and creating the graph
-    node_list = [0,1,2,3,4,5,6]
+    node_list = [0, 1, 2, 3, 4, 5, 6]
     g = Graph()
     ImplementGraph().create_graph(g, node_list)
 
@@ -103,14 +97,13 @@ if __name__ == '__main__':
     ImplementGraph().add_edge(g, 0, 2)
     ImplementGraph().add_edge(g, 0, 6)
     ImplementGraph().add_edge(g, 1, 4)
-    ImplementGraph().add_edge(g, 2, 3)
+    # ImplementGraph().add_edge(g, 2, 3)
     ImplementGraph().add_edge(g, 3, 5)
     ImplementGraph().add_edge(g, 5, 6)
     ImplementGraph().add_edge(g, 6, 1)
-    
+    ImplementGraph().add_edge(g, 4, 5)
+
     ImplementGraph().print_graph_adjacency(g)
-    print("Printing DFS")
-    ImplementGraph().implement_dfs(g.node_list[0])
-    ImplementGraph().reset_graph(g)
-    print("Printing BFS")
-    ImplementGraph().implement_bfs(g.node_list[0])
+
+    path_exists = ImplementGraph().check_path(g.node_list[0], g.node_list[5])
+    print(path_exists)
